@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hi Jin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        .mitr-extralight {
+            font-family: "Mitr", serif;
+            font-weight: 200;
+            font-style: normal;
+          }
+          
+          .mitr-light {
+            font-family: "Mitr", serif;
+            font-weight: 300;
+            font-style: normal;
+          }
+          
+          .mitr-regular {
+            font-family: "Mitr", serif;
+            font-weight: 400;
+            font-style: normal;
+          }
+          
+          .mitr-medium {
+            font-family: "Mitr", serif;
+            font-weight: 500;
+            font-style: normal;
+          }
+          
+          .mitr-semibold {
+            font-family: "Mitr", serif;
+            font-weight: 600;
+            font-style: normal;
+          }
+          
+          .mitr-bold {
+            font-family: "Mitr", serif;
+            font-weight: 700;
+            font-style: normal;
+          }
+
+          /* สไตล์เริ่มต้น (พื้นหลังสีขาว ขอบสีดำ) */
+          .custom-radio-button {
+            background-color: white;       /* พื้นหลังสีขาว */
+            color: #4d4d4d;                  /* สีตัวอักษร */
+            border-color: #e5e5e5 !important; /* ขอบสีดำ (บังคับ) */
+            transition: all 0.1s ease;     /* เพิ่มเอฟเฟกต์การเปลี่ยน */
+          }
+          
+          /* สไตล์เมื่อเมาส์ชี้ */
+          .custom-radio-button:hover {
+            background-color: #f7f7f7 !important; /* เปลี่ยนพื้นหลังเป็นสีเขียว */
+            color: #4e4e4e !important;           /* เปลี่ยนสีตัวอักษรเป็นสีขาว */
+            border-color: #e5e5e5 !important;    /* ขอบเปลี่ยนเป็นสีเขียว */
+          }
+          
+          /* สไตล์เมื่อ radio ถูกเลือก */
+          input[type="radio"]:checked + .custom-radio-button {
+            background-color: #ddf4ff !important; /* เปลี่ยนพื้นหลังเป็นสีเขียว */
+            color: #1a9ad6 !important;           /* เปลี่ยนสีตัวอักษรเป็นสีขาว */
+            border-color: #84d8ff !important;    /* ขอบเปลี่ยนเป็นสีเขียว */
+          }
+          
+    </style>
+</head>
+  
+  <body>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="container is-max-tablet p-3">
+        {% comment %} <h1>{{x}} {{id}}</h1> {% endcomment %}
+        <!-- Content here -->
+      
+      {% if id == 1  %}  <!-- first page -->  
+      <div class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center" style="height: 100vh;">
+        <!-- Icon -->
+        <div>
+          <lord-icon
+            src="{{type.lordicon}}"
+            trigger="loop"
+            delay="500"
+            style="width:150px;height:150px">
+          </lord-icon>
+        </div>
+
+        <!-- Text -->
+        <div class=" mb-5 mitr-light is-size-4-tablet is-size-5-mobile" style="text-align: center; margin-top: 1rem;">
+          {{type.description}}
+          {% comment %} สถานการณ์ต่อไปจะพาเราไปสู่โลกอันมืดมิด ที่ที่ <br>ความตื่นเต้นกับความกลัวแทบไม่แตกต่างกัน.. {% endcomment %}
+        </div>
+      </div>
+      
+
+      {% comment %} ตอนสรุป {% endcomment %}
+      {% elif next_page == "end" %}
+      <div class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center" style="height: 100vh;">
+        {% for i in question %}
+         <div class="fs-4 mitr-light mt-3" style="text-align: center;">{{i}}</div>
+         <div class="text-center">--</div>
+        {% endfor %}
+      </div>
+      {% else %}
+
+
+      {% comment %} question {% endcomment %}
+      <div style="margin-top: 25px;margin-bottom:150px;">
+        <div class="border border-warning-subtle border-3 rounded-4" style="padding:30px;">
+          <div class="fs-4 mitr-light" style="text-align: center; ">
+              {{question.description}}
+          </div>
+          <div class="fs-4 mitr-medium mt-3">
+              {{question.question}}??
+          </div>
+        </div>
+
+          {% comment %} choice {% endcomment %}
+          <div class="columns is-multiline is-mobile is-1-mobile is-2-desktop" style="margin-top: 20px;">
+            {% for choice in choices %}
+              {% if quantity > 4 %}
+              <div class="column is-3-desktop is-6-mobile is-3-tablet">
+                <input type="radio" class="btn-check" name="answer" value="{{choice.id}}" id="custom-radio{{forloop.counter}}" autocomplete="off">
+                <label class="custom-radio-button shadow-sm border border-3 fs-4 mitr-light btn btn-light d-flex justify-content-center align-items-center" 
+                       style="width:100%; height:90px; text-align: center;" for="custom-radio{{forloop.counter}}">
+                  <span>{{choice.description}}</span>
+                </label>
+              </div>
+              {% else %}
+              <div class="column is-6-desktop is-12-mobile is-6-tablet">
+                <input type="radio" class="btn-check" name="answer" value="{{choice.id}}" id="custom-radio{{forloop.counter}}" autocomplete="off">
+                <label class="custom-radio-button shadow-sm border border-3 is-size-6-mobile is-size-5-touch is-size-5-desktop mitr-light btn btn-light d-flex justify-content-center align-items-center" 
+                       style="width:100%; height:90px; text-align: center;" for="custom-radio{{forloop.counter}}">
+                  <span style="width: 80%;">{{choice.description}}</span>
+                </label>
+              </div>
+              {% endif %}
+            {% endfor %}  
+          </div> 
+
+
+      </div>
+      {% endif %}
+
+    </div>
+
+    {% comment %} footer {% endcomment %}
+    <nav class="navbar is-fixed-bottom bg-white border-top border-3 " style="height: 150px;">
+        <div class="container-fluid">
+            <div class="d-flex w-100 container">
+                <div class="p-2 ms-0">
+                    <a class="btn btn-primary btn-lg" style="width: 150px;" href="/game/ver1/{{name}}/{{back_page}}/" role="button">back</a>
+                </div>
+                <div class="p-2 ms-auto">
+                  {% if id == 1  %}  <!-- first page -->
+                  <a class="btn btn-success btn-lg" style="width: 150px;" href="/game/ver1/{{name}}/{{next_page}}/" role="button">ต่อไป</a>
+                  {% elif next_page == "end" %} <!-- end page -->
+                  <a class="btn btn-success btn-lg" style="width: 150px;" href="/game/ver1/" role="button">สิ้นสุด</a>
+                  {% else %}  
+                  <button type="submit" class="btn btn-success btn-lg" style="width: 150px;"formaction="/game/ver1/{{name}}/{{ next_page }}/" onclick="checkSelection(event)">
+                      ต่อไป
+                  </button>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+  </form>  
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      function checkSelection(event) {
+        // ตรวจสอบว่าไม่มีการเลือก radio button
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (!selectedOption) {
+          event.preventDefault(); // หยุดการส่งฟอร์ม
+          alert('กรุณาเลือกตัวเลือกก่อน');
+        }
+      }
+
+      
+    </script>
+    
+</body>
+</html>
